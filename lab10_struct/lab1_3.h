@@ -5,7 +5,9 @@ struct Point {
     int y;
     int z;
     char t;
+    
 };
+
 int size = sizeof(struct Point);
 
 

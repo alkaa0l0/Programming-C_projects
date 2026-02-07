@@ -6,8 +6,6 @@ int main() {
     
     struct Point *A = malloc(sizeof(struct Point));
     struct Point *B = malloc(sizeof(struct Point));
-    struct Point point;
-
 
     printf("Введите координаты точки A (x y z): ");
     scanf("%d %d %d", &A->x, &A->y, &A->z);

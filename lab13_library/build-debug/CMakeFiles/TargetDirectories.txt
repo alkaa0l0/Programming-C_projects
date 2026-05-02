@@ -1,0 +1,4 @@
+/home/git/lab12_library/build-debug/CMakeFiles/crypto_lib.dir
+/home/git/lab12_library/build-debug/CMakeFiles/crypto_program.dir
+/home/git/lab12_library/build-debug/CMakeFiles/edit_cache.dir
+/home/git/lab12_library/build-debug/CMakeFiles/rebuild_cache.dir

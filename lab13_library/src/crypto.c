@@ -23,7 +23,6 @@ void fill_crypto_data(struct crypto data[]) {
             data[i].change = 89;
         }
     }
-    fflush(stdout);
 }
 
 void print_crypto_table(const struct crypto data[]) {

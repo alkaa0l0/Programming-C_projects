@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtranslate_core.a CMakeFiles/translate_core.dir/src/utf8util.c.o CMakeFiles/translate_core.dir/src/dictionary.c.o CMakeFiles/translate_core.dir/src/translator.c.o CMakeFiles/translate_core.dir/src/logger.c.o CMakeFiles/translate_core.dir/src/config.c.o
+/usr/bin/ranlib libtranslate_core.a

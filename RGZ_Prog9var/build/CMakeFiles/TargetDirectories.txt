@@ -1,0 +1,6 @@
+/home/git/RGZ_Prog9var/build/CMakeFiles/translate_core.dir
+/home/git/RGZ_Prog9var/build/CMakeFiles/translate.dir
+/home/git/RGZ_Prog9var/build/CMakeFiles/test_translate.dir
+/home/git/RGZ_Prog9var/build/CMakeFiles/test.dir
+/home/git/RGZ_Prog9var/build/CMakeFiles/edit_cache.dir
+/home/git/RGZ_Prog9var/build/CMakeFiles/rebuild_cache.dir

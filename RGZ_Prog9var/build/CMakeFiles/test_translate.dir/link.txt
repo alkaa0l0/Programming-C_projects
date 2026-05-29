@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/test_translate.dir/tests/test_translate.c.o -o test_translate  libtranslate_core.a 

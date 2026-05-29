@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/translate.dir/src/main.c.o -o translate  libtranslate_core.a 

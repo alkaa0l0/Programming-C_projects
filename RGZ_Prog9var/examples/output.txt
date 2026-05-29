@@ -1,1 +1,6 @@
-У меня есть dog и cat.
+Hello, WORLD!
+
+Today sun shines brightly.
+I love my big house.
+
+Key лежит на столе.

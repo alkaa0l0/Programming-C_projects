@@ -85,12 +85,12 @@ clean: CMakeFiles/test_translate.dir/clean
 CMakeFiles/translate_core.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=5,6,7,8,9,10 "Built target translate_core"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=5,6,7,8,9 "Built target translate_core"
 .PHONY : CMakeFiles/translate_core.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/translate_core.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/translate_core.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 0
 .PHONY : CMakeFiles/translate_core.dir/rule
@@ -116,7 +116,7 @@ CMakeFiles/translate.dir/all: CMakeFiles/translate_core.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/translate.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/translate.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 0
 .PHONY : CMakeFiles/translate.dir/rule
@@ -142,7 +142,7 @@ CMakeFiles/test_translate.dir/all: CMakeFiles/translate_core.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_translate.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_translate.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/git/RGZ_Prog9var/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_translate.dir/rule

@@ -14,17 +14,14 @@ static char *trim(char *s) {
 }
 
 void config_defaults(Config *cfg) {
-    cfg->input[0] = '\0';
-    cfg->dictionary[0] = '\0';
-    cfg->output[0] = '\0';
+    cfg->input[0] = cfg->dictionary[0] = cfg->output[0] = '\0';
     strcpy(cfg->log_file, "translate.log");
     strcpy(cfg->log_level, "INFO");
     cfg->preserve_case = 1;
     cfg->show_alternatives = 0;
-    cfg->threads = 1;
 }
 
-static void set_str(char *dst, size_t cap, const char *val) {
+static void set_str(char *dst, int cap, const char *val) {
     strncpy(dst, val, cap - 1);
     dst[cap - 1] = '\0';
 }
@@ -35,8 +32,8 @@ int config_load(Config *cfg, const char *path) {
         log_msg(LOG_ERROR, "Не удалось открыть конфигурационный файл: %s", path);
         return -1;
     }
-    char line[2048];
-    size_t lineno = 0;
+    char line[1024];
+    int lineno = 0;
     while (fgets(line, sizeof(line), f)) {
         lineno++;
         char *p = trim(line);
@@ -44,7 +41,7 @@ int config_load(Config *cfg, const char *path) {
 
         char *eq = strchr(p, '=');
         if (!eq) {
-            log_msg(LOG_WARNING, "Конфиг, строка %zu без '=': %s", lineno, p);
+            log_msg(LOG_WARNING, "Конфиг: строка %d без '='", lineno);
             continue;
         }
         *eq = '\0';
@@ -58,8 +55,7 @@ int config_load(Config *cfg, const char *path) {
         else if (strcmp(key, "log_level") == 0)         set_str(cfg->log_level, sizeof(cfg->log_level), val);
         else if (strcmp(key, "preserve_case") == 0)     cfg->preserve_case = atoi(val);
         else if (strcmp(key, "show_alternatives") == 0) cfg->show_alternatives = atoi(val);
-        else if (strcmp(key, "threads") == 0)           cfg->threads = atoi(val);
-        else log_msg(LOG_WARNING, "Конфиг, неизвестный ключ '%s' (строка %zu)", key, lineno);
+        else log_msg(LOG_WARNING, "Конфиг: неизвестный ключ '%s' (строка %d)", key, lineno);
     }
     fclose(f);
     return 0;

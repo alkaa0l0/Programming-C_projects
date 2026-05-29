@@ -7,8 +7,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/translate_core.dir/src/logger.c.o.d"
   "CMakeFiles/translate_core.dir/src/translator.c.o"
   "CMakeFiles/translate_core.dir/src/translator.c.o.d"
-  "CMakeFiles/translate_core.dir/src/utf8util.c.o"
-  "CMakeFiles/translate_core.dir/src/utf8util.c.o.d"
   "libtranslate_core.a"
   "libtranslate_core.pdb"
 )

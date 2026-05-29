@@ -12,7 +12,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/git/RGZ_Prog9var/src/dictionary.c" "CMakeFiles/translate_core.dir/src/dictionary.c.o" "gcc" "CMakeFiles/translate_core.dir/src/dictionary.c.o.d"
   "/home/git/RGZ_Prog9var/src/logger.c" "CMakeFiles/translate_core.dir/src/logger.c.o" "gcc" "CMakeFiles/translate_core.dir/src/logger.c.o.d"
   "/home/git/RGZ_Prog9var/src/translator.c" "CMakeFiles/translate_core.dir/src/translator.c.o" "gcc" "CMakeFiles/translate_core.dir/src/translator.c.o.d"
-  "/home/git/RGZ_Prog9var/src/utf8util.c" "CMakeFiles/translate_core.dir/src/utf8util.c.o" "gcc" "CMakeFiles/translate_core.dir/src/utf8util.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

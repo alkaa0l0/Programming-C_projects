@@ -1,267 +1,206 @@
 #include "translator.h"
-#include "utf8util.h"
 #include "logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>
+#include <ctype.h>
 
-/* --- Простой растущий строковый буфер --- */
-typedef struct {
-    char  *data;
-    size_t len;
-    size_t cap;
-} StrBuf;
+/* ===================== Работа с буквами UTF-8 ===================== */
+/*
+ * Текст хранится в UTF-8. Латинская буква занимает 1 байт, кириллическая — 2.
+ * Слово — это подряд идущие "буквенные" байты: латиница (a-z, A-Z) или
+ * любой байт со старшим битом (часть кириллического символа). Всё остальное
+ * (пробелы, цифры, знаки препинания) — разделители.
+ */
 
-static int sb_init(StrBuf *b) {
-    b->cap = 256;
-    b->len = 0;
-    b->data = (char *)malloc(b->cap);
-    if (!b->data) return -1;
-    b->data[0] = '\0';
-    return 0;
+/* Является ли байт частью слова? */
+int is_word_byte(unsigned char b) {
+    return (b >= 0x80) || isalpha(b);
 }
 
-static int sb_append(StrBuf *b, const char *s, size_t n) {
-    if (b->len + n + 1 > b->cap) {
-        size_t ncap = b->cap;
-        while (b->len + n + 1 > ncap) ncap *= 2;
-        char *tmp = (char *)realloc(b->data, ncap);
-        if (!tmp) return -1;
-        b->data = tmp;
-        b->cap = ncap;
+/*
+ * Прочитать один символ (буква) из строки s начиная с позиции pos.
+ * Возвращает код символа, в *bytes — сколько байт он занял (1 или 2).
+ */
+static unsigned int read_char(const char *s, int len, int pos, int *bytes) {
+    unsigned char c = (unsigned char)s[pos];
+    if (c < 0x80) {                           /* латиница: 1 байт */
+        *bytes = 1;
+        return c;
     }
-    memcpy(b->data + b->len, s, n);
-    b->len += n;
-    b->data[b->len] = '\0';
-    return 0;
+    if ((c & 0xE0) == 0xC0 && pos + 1 < len) { /* кириллица: 2 байта */
+        *bytes = 2;
+        return ((c & 0x1F) << 6) | ((unsigned char)s[pos + 1] & 0x3F);
+    }
+    *bytes = 1;
+    return c;
 }
 
-/* --- Перевод одного слова в буфер --- */
-static void translate_word(StrBuf *out, const char *word, size_t wlen,
-                           const Dictionary *dict,
-                           const TranslatorOptions *opts,
-                           TranslateStats *st) {
-    /* временная C-строка слова */
-    char *w = (char *)malloc(wlen + 1);
+/* Записать символ обратно в UTF-8. Возвращает число байт. */
+static int write_char(unsigned int cp, char *out) {
+    if (cp < 0x80) { out[0] = (char)cp; return 1; }
+    out[0] = (char)(0xC0 | (cp >> 6));
+    out[1] = (char)(0x80 | (cp & 0x3F));
+    return 2;
+}
+
+static int is_letter(unsigned int cp) {
+    if (cp < 0x80) return isalpha((int)cp);
+    return (cp >= 0x0400 && cp <= 0x04FF);     /* диапазон кириллицы */
+}
+
+static int is_upper_cp(unsigned int cp) {
+    if (cp < 0x80) return isupper((int)cp);
+    if (cp == 0x0401) return 1;                /* Ё */
+    return (cp >= 0x0410 && cp <= 0x042F);     /* А..Я */
+}
+
+static unsigned int to_upper_cp(unsigned int cp) {
+    if (cp < 0x80) return toupper((int)cp);
+    if (cp == 0x0451) return 0x0401;           /* ё -> Ё */
+    if (cp >= 0x0430 && cp <= 0x044F) return cp - 0x20;  /* а..я -> А..Я */
+    return cp;
+}
+
+static unsigned int to_lower_cp(unsigned int cp) {
+    if (cp < 0x80) return tolower((int)cp);
+    if (cp == 0x0401) return 0x0451;           /* Ё -> ё */
+    if (cp >= 0x0410 && cp <= 0x042F) return cp + 0x20;  /* А..Я -> а..я */
+    return cp;
+}
+
+char *str_to_lower(const char *s) {
+    int len = (int)strlen(s);
+    char *out = malloc(len * 2 + 1);           /* запас на рост байт */
+    if (!out) return NULL;
+    int pos = 0, o = 0, bytes;
+    while (pos < len) {
+        unsigned int cp = read_char(s, len, pos, &bytes);
+        o += write_char(to_lower_cp(cp), out + o);
+        pos += bytes;
+    }
+    out[o] = '\0';
+    return out;
+}
+
+WordCase detect_case(const char *word, int len) {
+    int letters = 0, uppers = 0, first_upper = 0, pos = 0, bytes, idx = 0;
+    while (pos < len) {
+        unsigned int cp = read_char(word, len, pos, &bytes);
+        if (is_letter(cp)) {
+            letters++;
+            if (is_upper_cp(cp)) {
+                uppers++;
+                if (idx == 0) first_upper = 1;
+            }
+            idx++;
+        }
+        pos += bytes;
+    }
+    if (letters == 0) return CASE_LOWER;
+    if (uppers == letters && letters > 1) return CASE_UPPER;  /* ПРИВЕТ */
+    if (first_upper) return CASE_TITLE;                        /* Привет, Я */
+    return CASE_LOWER;
+}
+
+char *apply_case(const char *s, WordCase c) {
+    int len = (int)strlen(s);
+    char *out = malloc(len * 2 + 1);
+    if (!out) return NULL;
+    int pos = 0, o = 0, bytes, first = 1;
+    while (pos < len) {
+        unsigned int cp = read_char(s, len, pos, &bytes);
+        unsigned int res = cp;
+        if (is_letter(cp)) {
+            if (c == CASE_UPPER) res = to_upper_cp(cp);
+            else if (c == CASE_TITLE && first) res = to_upper_cp(cp);
+            first = 0;
+        }
+        o += write_char(res, out + o);
+        pos += bytes;
+    }
+    out[o] = '\0';
+    return out;
+}
+
+/* ===================== Перевод текста ===================== */
+
+/* Перевести одно слово и дописать результат в файл out. */
+static void translate_word(FILE *out, const char *word, int len,
+                           const Dictionary *d, const Options *opt, Stats *st) {
+    char *w = malloc(len + 1);
     if (!w) return;
-    memcpy(w, word, wlen);
-    w[wlen] = '\0';
+    memcpy(w, word, len);
+    w[len] = '\0';
+    st->total++;
 
-    st->total_words++;
-
-    const DictEntry *e = dict_lookup(dict, w);
-    if (!e) {                                   /* нет в словаре -> как есть */
-        sb_append(out, word, wlen);
+    const Entry *e = dict_find(d, w);
+    if (!e) {                                  /* нет в словаре — пишем как есть */
+        fwrite(word, 1, len, out);
         st->untranslated++;
-        log_msg(LOG_INFO, "Слово не найдено в словаре: %s", w);
+        log_msg(LOG_INFO, "Слово не найдено: %s", w);
         free(w);
         return;
     }
 
-    WordCase wc = opts->preserve_case
-                  ? u8_detect_case(word, wlen)
-                  : CASE_OTHER;
+    WordCase wc = opt->preserve_case ? detect_case(word, len) : CASE_LOWER;
 
-    /* основной перевод */
-    char *primary = u8_apply_case(e->translations[0], wc);
-    if (primary) {
-        sb_append(out, primary, strlen(primary));
-        free(primary);
-    } else {
-        sb_append(out, e->translations[0], strlen(e->translations[0]));
-    }
+    char *primary = apply_case(e->translations[0], wc);
+    fputs(primary ? primary : e->translations[0], out);
+    free(primary);
 
     /* альтернативные значения многозначного слова */
-    if (opts->show_alternatives && e->trans_count > 1) {
-        sb_append(out, "(", 1);
-        for (size_t i = 1; i < e->trans_count; i++) {
-            if (i > 1) sb_append(out, "|", 1);
-            char *alt = u8_apply_case(e->translations[i], wc);
-            const char *s = alt ? alt : e->translations[i];
-            sb_append(out, s, strlen(s));
+    if (opt->show_alternatives && e->trans_count > 1) {
+        fputc('(', out);
+        for (int i = 1; i < e->trans_count; i++) {
+            if (i > 1) fputc('|', out);
+            char *alt = apply_case(e->translations[i], wc);
+            fputs(alt ? alt : e->translations[i], out);
             free(alt);
         }
-        sb_append(out, ")", 1);
+        fputc(')', out);
     }
 
     st->translated++;
     free(w);
 }
 
-/* Перевести одну строку (сегмент текста), сохраняя все разделители. */
-static char *translate_line(const char *line, const Dictionary *dict,
-                            const TranslatorOptions *opts,
-                            TranslateStats *st) {
-    StrBuf out;
-    if (sb_init(&out) != 0) return NULL;
-
-    size_t i = 0, len = strlen(line);
-    while (i < len) {
-        if (u8_is_word_byte((unsigned char)line[i])) {
-            size_t start = i;
-            while (i < len && u8_is_word_byte((unsigned char)line[i])) i++;
-            translate_word(&out, line + start, i - start, dict, opts, st);
-        } else {
-            /* разделитель (пробел, пунктуация, перенос строки) - копируем как есть */
-            sb_append(&out, line + i, 1);
-            i++;
-        }
-    }
-    return out.data;
-}
-
-/* --- Многопоточность --- */
-typedef struct {
-    char **lines;
-    char **results;
-    size_t start, end;
-    const Dictionary *dict;
-    const TranslatorOptions *opts;
-    TranslateStats stats;     /* локальная статистика потока */
-} ThreadArg;
-
-static void *worker(void *arg) {
-    ThreadArg *a = (ThreadArg *)arg;
-    memset(&a->stats, 0, sizeof(a->stats));
-    for (size_t i = a->start; i < a->end; i++) {
-        a->results[i] = translate_line(a->lines[i], a->dict, a->opts, &a->stats);
-    }
-    return NULL;
-}
-
-/* Прочитать файл целиком в буфер. *out_size - размер. */
-static char *read_whole_file(const char *path, size_t *out_size) {
-    FILE *f = fopen(path, "rb");
-    if (!f) return NULL;
-    fseek(f, 0, SEEK_END);
-    long sz = ftell(f);
-    fseek(f, 0, SEEK_SET);
-    if (sz < 0) { fclose(f); return NULL; }
-    char *buf = (char *)malloc((size_t)sz + 1);
-    if (!buf) { fclose(f); return NULL; }
-    size_t rd = fread(buf, 1, (size_t)sz, f);
-    buf[rd] = '\0';
-    fclose(f);
-    *out_size = rd;
-    return buf;
-}
-
-/*
- * Разбить буфер на сегменты-строки. Каждый сегмент включает завершающий '\n'
- * (кроме, возможно, последнего). Это позволяет точно восстановить текст.
- */
-static char **split_lines(const char *buf, size_t size, size_t *count) {
-    size_t cap = 64, n = 0;
-    char **lines = (char **)malloc(cap * sizeof(char *));
-    if (!lines) return NULL;
-
-    size_t start = 0;
-    for (size_t i = 0; i <= size; i++) {
-        if (i == size || buf[i] == '\n') {
-            if (i == size && start == size && n > 0) break; /* нет хвоста */
-            size_t seg_len = (i < size) ? (i - start + 1) : (i - start);
-            char *seg = (char *)malloc(seg_len + 1);
-            if (!seg) { for (size_t k=0;k<n;k++) free(lines[k]); free(lines); return NULL; }
-            memcpy(seg, buf + start, seg_len);
-            seg[seg_len] = '\0';
-            if (n == cap) {
-                cap *= 2;
-                char **t = (char **)realloc(lines, cap * sizeof(char *));
-                if (!t) { for (size_t k=0;k<n;k++) free(lines[k]); free(lines); return NULL; }
-                lines = t;
-            }
-            lines[n++] = seg;
-            start = i + 1;
-            if (i == size) break;
-        }
-    }
-    *count = n;
-    return lines;
-}
-
-int translate_file(const char *in_path, const char *out_path,
-                   const Dictionary *dict, const TranslatorOptions *opts,
-                   TranslateStats *stats) {
-    size_t size = 0;
-    char *buf = read_whole_file(in_path, &size);
-    if (!buf) {
-        log_msg(LOG_ERROR, "Не удалось прочитать входной файл: %s", in_path);
+int translate_file(const char *in, const char *out,
+                   const Dictionary *d, const Options *opt, Stats *st) {
+    FILE *fin = fopen(in, "rb");
+    if (!fin) {
+        log_msg(LOG_ERROR, "Не удалось открыть входной файл: %s", in);
         return -1;
     }
-
-    size_t nlines = 0;
-    char **lines = split_lines(buf, size, &nlines);
-    free(buf);
-    if (!lines) {
-        log_msg(LOG_ERROR, "Нехватка памяти при разборе текста");
+    FILE *fout = fopen(out, "wb");
+    if (!fout) {
+        log_msg(LOG_ERROR, "Не удалось создать выходной файл: %s", out);
+        fclose(fin);
         return -2;
     }
 
-    char **results = (char **)calloc(nlines ? nlines : 1, sizeof(char *));
-    if (!results) {
-        for (size_t i = 0; i < nlines; i++) free(lines[i]);
-        free(lines);
-        return -2;
+    st->total = st->translated = st->untranslated = 0;
+
+    /* Читаем входной файл посимвольно: буквы копим в слово, остальное копируем. */
+    char word[1024];
+    int wlen = 0;
+    int ch;
+    while ((ch = fgetc(fin)) != EOF) {
+        if (is_word_byte((unsigned char)ch) && wlen < (int)sizeof(word) - 1) {
+            word[wlen++] = (char)ch;           /* накапливаем слово */
+        } else {
+            if (wlen > 0) {                    /* слово закончилось — переводим */
+                translate_word(fout, word, wlen, d, opt, st);
+                wlen = 0;
+            }
+            fputc(ch, fout);                   /* разделитель копируем как есть */
+        }
     }
+    if (wlen > 0) translate_word(fout, word, wlen, d, opt, st);  /* последнее слово */
 
-    int nthreads = opts->threads;
-    if (nthreads < 1) nthreads = 1;
-    if ((size_t)nthreads > nlines) nthreads = (nlines > 0) ? (int)nlines : 1;
-
-    log_msg(LOG_INFO, "Перевод %zu строк в %d поток(ах)", nlines, nthreads);
-
-    pthread_t *tids = (pthread_t *)malloc(sizeof(pthread_t) * nthreads);
-    ThreadArg *args = (ThreadArg *)malloc(sizeof(ThreadArg) * nthreads);
-    if (!tids || !args) {
-        free(tids); free(args);
-        for (size_t i = 0; i < nlines; i++) free(lines[i]);
-        free(lines); free(results);
-        return -2;
-    }
-
-    size_t per = (nlines + nthreads - 1) / (size_t)nthreads;  /* строк на поток */
-    for (int t = 0; t < nthreads; t++) {
-        args[t].lines = lines;
-        args[t].results = results;
-        args[t].start = (size_t)t * per;
-        args[t].end = args[t].start + per;
-        if (args[t].end > nlines) args[t].end = nlines;
-        if (args[t].start > nlines) args[t].start = nlines;
-        args[t].dict = dict;
-        args[t].opts = opts;
-        pthread_create(&tids[t], NULL, worker, &args[t]);
-    }
-
-    TranslateStats total = {0, 0, 0};
-    for (int t = 0; t < nthreads; t++) {
-        pthread_join(tids[t], NULL);
-        total.total_words  += args[t].stats.total_words;
-        total.translated   += args[t].stats.translated;
-        total.untranslated += args[t].stats.untranslated;
-    }
-    free(tids);
-    free(args);
-
-    /* Записываем результат в выходной файл по порядку строк. */
-    FILE *out = fopen(out_path, "wb");
-    if (!out) {
-        log_msg(LOG_ERROR, "Не удалось создать выходной файл: %s", out_path);
-        for (size_t i = 0; i < nlines; i++) { free(lines[i]); free(results[i]); }
-        free(lines); free(results);
-        return -3;
-    }
-    for (size_t i = 0; i < nlines; i++) {
-        if (results[i]) fputs(results[i], out);
-    }
-    fclose(out);
-
-    for (size_t i = 0; i < nlines; i++) { free(lines[i]); free(results[i]); }
-    free(lines);
-    free(results);
-
-    if (stats) *stats = total;
-    log_msg(LOG_INFO, "Готово. Слов: %zu, переведено: %zu, без перевода: %zu",
-            total.total_words, total.translated, total.untranslated);
+    fclose(fin);
+    fclose(fout);
+    log_msg(LOG_INFO, "Готово. Слов: %d, переведено: %d, без перевода: %d",
+            st->total, st->translated, st->untranslated);
     return 0;
 }

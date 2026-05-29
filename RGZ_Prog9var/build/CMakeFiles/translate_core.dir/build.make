@@ -69,24 +69,10 @@ include CMakeFiles/translate_core.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/translate_core.dir/flags.make
 
-CMakeFiles/translate_core.dir/src/utf8util.c.o: CMakeFiles/translate_core.dir/flags.make
-CMakeFiles/translate_core.dir/src/utf8util.c.o: /home/git/RGZ_Prog9var/src/utf8util.c
-CMakeFiles/translate_core.dir/src/utf8util.c.o: CMakeFiles/translate_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/translate_core.dir/src/utf8util.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/translate_core.dir/src/utf8util.c.o -MF CMakeFiles/translate_core.dir/src/utf8util.c.o.d -o CMakeFiles/translate_core.dir/src/utf8util.c.o -c /home/git/RGZ_Prog9var/src/utf8util.c
-
-CMakeFiles/translate_core.dir/src/utf8util.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/translate_core.dir/src/utf8util.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/git/RGZ_Prog9var/src/utf8util.c > CMakeFiles/translate_core.dir/src/utf8util.c.i
-
-CMakeFiles/translate_core.dir/src/utf8util.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/translate_core.dir/src/utf8util.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/git/RGZ_Prog9var/src/utf8util.c -o CMakeFiles/translate_core.dir/src/utf8util.c.s
-
 CMakeFiles/translate_core.dir/src/dictionary.c.o: CMakeFiles/translate_core.dir/flags.make
 CMakeFiles/translate_core.dir/src/dictionary.c.o: /home/git/RGZ_Prog9var/src/dictionary.c
 CMakeFiles/translate_core.dir/src/dictionary.c.o: CMakeFiles/translate_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/translate_core.dir/src/dictionary.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/translate_core.dir/src/dictionary.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/translate_core.dir/src/dictionary.c.o -MF CMakeFiles/translate_core.dir/src/dictionary.c.o.d -o CMakeFiles/translate_core.dir/src/dictionary.c.o -c /home/git/RGZ_Prog9var/src/dictionary.c
 
 CMakeFiles/translate_core.dir/src/dictionary.c.i: cmake_force
@@ -100,7 +86,7 @@ CMakeFiles/translate_core.dir/src/dictionary.c.s: cmake_force
 CMakeFiles/translate_core.dir/src/translator.c.o: CMakeFiles/translate_core.dir/flags.make
 CMakeFiles/translate_core.dir/src/translator.c.o: /home/git/RGZ_Prog9var/src/translator.c
 CMakeFiles/translate_core.dir/src/translator.c.o: CMakeFiles/translate_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/translate_core.dir/src/translator.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/translate_core.dir/src/translator.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/translate_core.dir/src/translator.c.o -MF CMakeFiles/translate_core.dir/src/translator.c.o.d -o CMakeFiles/translate_core.dir/src/translator.c.o -c /home/git/RGZ_Prog9var/src/translator.c
 
 CMakeFiles/translate_core.dir/src/translator.c.i: cmake_force
@@ -114,7 +100,7 @@ CMakeFiles/translate_core.dir/src/translator.c.s: cmake_force
 CMakeFiles/translate_core.dir/src/logger.c.o: CMakeFiles/translate_core.dir/flags.make
 CMakeFiles/translate_core.dir/src/logger.c.o: /home/git/RGZ_Prog9var/src/logger.c
 CMakeFiles/translate_core.dir/src/logger.c.o: CMakeFiles/translate_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/translate_core.dir/src/logger.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/translate_core.dir/src/logger.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/translate_core.dir/src/logger.c.o -MF CMakeFiles/translate_core.dir/src/logger.c.o.d -o CMakeFiles/translate_core.dir/src/logger.c.o -c /home/git/RGZ_Prog9var/src/logger.c
 
 CMakeFiles/translate_core.dir/src/logger.c.i: cmake_force
@@ -128,7 +114,7 @@ CMakeFiles/translate_core.dir/src/logger.c.s: cmake_force
 CMakeFiles/translate_core.dir/src/config.c.o: CMakeFiles/translate_core.dir/flags.make
 CMakeFiles/translate_core.dir/src/config.c.o: /home/git/RGZ_Prog9var/src/config.c
 CMakeFiles/translate_core.dir/src/config.c.o: CMakeFiles/translate_core.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/translate_core.dir/src/config.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/translate_core.dir/src/config.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/translate_core.dir/src/config.c.o -MF CMakeFiles/translate_core.dir/src/config.c.o.d -o CMakeFiles/translate_core.dir/src/config.c.o -c /home/git/RGZ_Prog9var/src/config.c
 
 CMakeFiles/translate_core.dir/src/config.c.i: cmake_force
@@ -141,7 +127,6 @@ CMakeFiles/translate_core.dir/src/config.c.s: cmake_force
 
 # Object files for target translate_core
 translate_core_OBJECTS = \
-"CMakeFiles/translate_core.dir/src/utf8util.c.o" \
 "CMakeFiles/translate_core.dir/src/dictionary.c.o" \
 "CMakeFiles/translate_core.dir/src/translator.c.o" \
 "CMakeFiles/translate_core.dir/src/logger.c.o" \
@@ -150,14 +135,13 @@ translate_core_OBJECTS = \
 # External object files for target translate_core
 translate_core_EXTERNAL_OBJECTS =
 
-libtranslate_core.a: CMakeFiles/translate_core.dir/src/utf8util.c.o
 libtranslate_core.a: CMakeFiles/translate_core.dir/src/dictionary.c.o
 libtranslate_core.a: CMakeFiles/translate_core.dir/src/translator.c.o
 libtranslate_core.a: CMakeFiles/translate_core.dir/src/logger.c.o
 libtranslate_core.a: CMakeFiles/translate_core.dir/src/config.c.o
 libtranslate_core.a: CMakeFiles/translate_core.dir/build.make
 libtranslate_core.a: CMakeFiles/translate_core.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking C static library libtranslate_core.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/git/RGZ_Prog9var/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C static library libtranslate_core.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/translate_core.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/translate_core.dir/link.txt --verbose=$(VERBOSE)
 

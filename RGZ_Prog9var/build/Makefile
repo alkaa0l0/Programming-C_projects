@@ -285,30 +285,6 @@ src/translator.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/src/translator.c.s
 .PHONY : src/translator.c.s
 
-src/utf8util.o: src/utf8util.c.o
-.PHONY : src/utf8util.o
-
-# target to build an object file
-src/utf8util.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/src/utf8util.c.o
-.PHONY : src/utf8util.c.o
-
-src/utf8util.i: src/utf8util.c.i
-.PHONY : src/utf8util.i
-
-# target to preprocess a source file
-src/utf8util.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/src/utf8util.c.i
-.PHONY : src/utf8util.c.i
-
-src/utf8util.s: src/utf8util.c.s
-.PHONY : src/utf8util.s
-
-# target to generate assembly for a file
-src/utf8util.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/translate_core.dir/build.make CMakeFiles/translate_core.dir/src/utf8util.c.s
-.PHONY : src/utf8util.c.s
-
 tests/test_translate.o: tests/test_translate.c.o
 .PHONY : tests/test_translate.o
 
@@ -360,9 +336,6 @@ help:
 	@echo "... src/translator.o"
 	@echo "... src/translator.i"
 	@echo "... src/translator.s"
-	@echo "... src/utf8util.o"
-	@echo "... src/utf8util.i"
-	@echo "... src/utf8util.s"
 	@echo "... tests/test_translate.o"
 	@echo "... tests/test_translate.i"
 	@echo "... tests/test_translate.s"

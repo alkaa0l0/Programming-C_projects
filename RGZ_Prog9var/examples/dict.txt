@@ -1,0 +1,18 @@
+# Словарь русско-английский. Формат:  слово = перевод
+# Многозначные слова: значения через '|'
+привет = hello
+мир = world | peace
+кот = cat
+кошка = cat
+собака = dog
+дом = house | home
+большой = big | large
+красивый = beautiful
+солнце = sun
+светит = shines
+ярко = brightly
+сегодня = today
+я = I
+люблю = love
+свой = my
+ключ = key | wrench | spring

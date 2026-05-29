@@ -1,0 +1,107 @@
+Start testing: May 29 12:59 +07
+----------------------------------------------------------
+1/4 Testing: utf8
+1/4 Test: utf8
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "utf8"
+Directory: /home/git/RGZ_Prog9var/build
+"utf8" start time: May 29 12:59 +07
+Output:
+----------------------------------------------------------
+== UTF-8 / регистр ==
+  [ OK ] строчное -> CASE_OTHER
+  [ OK ] Заглавная -> CASE_TITLE
+  [ OK ] ВЕРХНИЙ -> CASE_UPPER
+  [ OK ] latin lower -> CASE_OTHER
+  [ OK ] Latin Title -> CASE_TITLE
+  [ OK ] LATIN UPPER -> CASE_UPPER
+  [ OK ] apply TITLE к 'hello'
+  [ OK ] apply UPPER к 'hello'
+  [ OK ] apply UPPER к 'мир' (кириллица)
+  [ OK ] apply TITLE к 'мир' (кириллица)
+  [ OK ] to_lower 'ПрИвЕт'
+
+Итог: пройдено 11 из 11
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"utf8" end time: May 29 12:59 +07
+"utf8" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: dict
+2/4 Test: dict
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "dict"
+Directory: /home/git/RGZ_Prog9var/build
+"dict" start time: May 29 12:59 +07
+Output:
+----------------------------------------------------------
+== Словарь ==
+  [ OK ] загружено 3 слова
+  [ OK ] одна некорректная строка
+  [ OK ] найдено 'привет'
+  [ OK ] перевод 'привет' = hello
+  [ OK ] найдено 'МИР' без учёта регистра
+  [ OK ] многозначное 'мир' -> 2 значения
+  [ OK ] мир[0]=world
+  [ OK ] мир[1]=peace
+  [ OK ] пробелы вокруг ключа/значения обрезаны
+  [ OK ] перевод 'кот' = cat
+  [ OK ] несуществующее слово -> NULL
+
+Итог: пройдено 11 из 11
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"dict" end time: May 29 12:59 +07
+"dict" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: translate
+3/4 Test: translate
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "translate"
+Directory: /home/git/RGZ_Prog9var/build
+"translate" start time: May 29 12:59 +07
+Output:
+----------------------------------------------------------
+== Перевод текста ==
+  [ OK ] translate_file завершился успешно
+  [ OK ] сохранены регистр, пунктуация и форматирование
+  [ OK ] посчитано 3 слова
+  [ OK ] переведено 3 слова
+  [ OK ] режим многозначности выводит альтернативы
+
+Итог: пройдено 5 из 5
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"translate" end time: May 29 12:59 +07
+"translate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: config
+4/4 Test: config
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "config"
+Directory: /home/git/RGZ_Prog9var/build
+"config" start time: May 29 12:59 +07
+Output:
+----------------------------------------------------------
+== Конфигурация ==
+  [ OK ] config_load успешен
+  [ OK ] input прочитан
+  [ OK ] dictionary прочитан
+  [ OK ] threads = 4
+  [ OK ] preserve_case = 0
+
+Итог: пройдено 5 из 5
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"config" end time: May 29 12:59 +07
+"config" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 29 12:59 +07

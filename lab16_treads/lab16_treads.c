@@ -109,7 +109,7 @@ void *sleep_sort(void *arg)
 
     sleep(num);
 
-    printf("%d ", num);
+    printf("%d\n", num);
 
     return NULL;
 }

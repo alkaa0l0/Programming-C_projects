@@ -12,14 +12,8 @@ typedef struct {
     int  show_alternatives; /* показывать многозначность */
 } Config;
 
-/* Заполнить значениями по умолчанию. */
 void config_defaults(Config *cfg);
 
-/*
- * Прочитать конфигурацию из файла формата KEY=VALUE.
- * Строки с '#' и пустые пропускаются, неизвестные ключи -> предупреждение.
- * Возвращает 0 при успехе, -1 если файл не открылся.
- */
 int config_load(Config *cfg, const char *path);
 
-#endif /* CONFIG_H */
+#endif

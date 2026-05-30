@@ -1,7 +1,5 @@
 /*
  * UNIT-тесты без внешних библиотек.
- * Запуск:  test_translate [группа]   где группа = case | dict | translate | config | all
- * Возвращает 0, если все тесты пройдены.
  */
 #include "translator.h"
 #include "dictionary.h"
@@ -56,7 +54,7 @@ static void test_dict(void) {
     CHECK(n == 3, "загружено 3 слова");
     CHECK(bad == 1, "одна некорректная строка");
 
-    const Entry *e = dict_find(d, "ПРИВЕТ");           /* регистр не важен */
+    const Entry *e = dict_find(d, "ПРИВЕТ");     
     CHECK(e != NULL, "найдено 'ПРИВЕТ' без учёта регистра");
     if (e) CHECK_STR(e->translations[0], "hello", "перевод hello");
 
@@ -85,7 +83,7 @@ static void test_translate(void) {
     Dictionary *d = dict_create();
     dict_load(d, dp, NULL);
 
-    Options opt = {1, 0};       /* сохранять регистр, без альтернатив */
+    Options opt = {1, 0};   
     Stats st;
     int rc = translate_file(ip, op, d, &opt, &st);
     CHECK(rc == 0, "translate_file успешен");

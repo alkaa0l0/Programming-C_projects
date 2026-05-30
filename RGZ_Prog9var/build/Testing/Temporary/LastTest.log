@@ -1,0 +1,99 @@
+Start testing: May 30 10:03 +07
+----------------------------------------------------------
+1/4 Testing: case
+1/4 Test: case
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "case"
+Directory: /home/git/RGZ_Prog9var/build
+"case" start time: May 30 10:03 +07
+Output:
+----------------------------------------------------------
+== Регистр ==
+  [ OK ] строчное -> LOWER
+  [ OK ] Заглавная -> TITLE
+  [ OK ] ВЕРХНИЙ -> UPPER
+  [ OK ] Latin Title
+  [ OK ] LATIN UPPER
+  [ OK ] TITLE к hello
+  [ OK ] UPPER к hello
+  [ OK ] UPPER к мир
+  [ OK ] TITLE к мир
+  [ OK ] to_lower
+
+Итог: пройдено 10 из 10
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"case" end time: May 30 10:03 +07
+"case" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: dict
+2/4 Test: dict
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "dict"
+Directory: /home/git/RGZ_Prog9var/build
+"dict" start time: May 30 10:03 +07
+Output:
+----------------------------------------------------------
+== Словарь ==
+  [ OK ] загружено 3 слова
+  [ OK ] одна некорректная строка
+  [ OK ] найдено 'ПРИВЕТ' без учёта регистра
+  [ OK ] перевод hello
+  [ OK ] многозначное 'мир' -> 2 значения
+  [ OK ] мир[1]=peace
+  [ OK ] несуществующее -> NULL
+
+Итог: пройдено 7 из 7
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"dict" end time: May 30 10:03 +07
+"dict" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: translate
+3/4 Test: translate
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "translate"
+Directory: /home/git/RGZ_Prog9var/build
+"translate" start time: May 30 10:03 +07
+Output:
+----------------------------------------------------------
+== Перевод ==
+  [ OK ] translate_file успешен
+  [ OK ] регистр + пунктуация + форматирование
+  [ OK ] переведено 3 слова
+  [ OK ] альтернативы многозначного слова
+
+Итог: пройдено 4 из 4
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"translate" end time: May 30 10:03 +07
+"translate" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: config
+4/4 Test: config
+Command: "/home/git/RGZ_Prog9var/build/test_translate" "config"
+Directory: /home/git/RGZ_Prog9var/build
+"config" start time: May 30 10:03 +07
+Output:
+----------------------------------------------------------
+== Конфиг ==
+  [ OK ] config_load успешен
+  [ OK ] input прочитан
+  [ OK ] preserve_case = 0
+
+Итог: пройдено 3 из 3
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"config" end time: May 30 10:03 +07
+"config" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 30 10:03 +07

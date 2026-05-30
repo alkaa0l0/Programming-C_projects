@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Убрать пробелы по краям строки (на месте). */
+
 static char *trim(char *s) {
     while (*s == ' ' || *s == '\t' || *s == '\r' || *s == '\n') s++;
     if (*s == '\0') return s;
@@ -27,7 +27,7 @@ Dictionary *dict_create(void) {
 
 /* Добавить новое слово с одним переводом. */
 static Entry *dict_add_word(Dictionary *d, const char *source) {
-    if (d->count == d->capacity) {                 /* не хватает места — увеличиваем */
+    if (d->count == d->capacity) {                 
         int ncap = d->capacity * 2;
         Entry *tmp = realloc(d->entries, sizeof(Entry) * ncap);
         if (!tmp) return NULL;
@@ -63,7 +63,7 @@ int dict_load(Dictionary *d, const char *path, int *bad_lines) {
     while (fgets(line, sizeof(line), f)) {
         lineno++;
         char *p = trim(line);
-        if (*p == '\0' || *p == '#') continue;       /* пустая строка / комментарий */
+        if (*p == '\0' || *p == '#') continue;       
 
         char *eq = strchr(p, '=');
         if (!eq) {
@@ -80,10 +80,10 @@ int dict_load(Dictionary *d, const char *path, int *bad_lines) {
             continue;
         }
 
-        char *key = str_to_lower(key_raw);           /* ключ — в нижнем регистре */
+        char *key = str_to_lower(key_raw);          
         if (!key) { fclose(f); return -1; }
 
-        Entry *e = find_mut(d, key);                 /* слово уже есть? */
+        Entry *e = find_mut(d, key);                 
         if (!e) e = dict_add_word(d, key);
         free(key);
         if (!e) { log_msg(LOG_ERROR, "Нехватка памяти"); fclose(f); return -1; }

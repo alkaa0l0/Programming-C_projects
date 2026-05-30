@@ -15,7 +15,7 @@ static const char *level_name(LogLevel level) {
 
 int log_init(const char *path, LogLevel min_level) {
     g_min = min_level;
-    if (!path || path[0] == '\0') { g_log = NULL; return 0; }  /* лог отключён */
+    if (!path || path[0] == '\0') { g_log = NULL; return 0; } 
     g_log = fopen(path, "a");
     return g_log ? 0 : -1;
 }

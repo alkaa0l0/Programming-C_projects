@@ -1,3 +1,0 @@
-/home/git/lab18_cpp/build/CMakeFiles/paint.dir
-/home/git/lab18_cpp/build/CMakeFiles/edit_cache.dir
-/home/git/lab18_cpp/build/CMakeFiles/rebuild_cache.dir

@@ -68,7 +68,7 @@ static void test_decreasing(void **state) {
     struct Node *head = new_node(3);
     head->next = new_node(2);
     head->next->next = new_node(1);
-    assert_true(isSorted(head));
+    assert_false(isSorted(head));
     free_list(head);
 }
 

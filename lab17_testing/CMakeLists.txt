@@ -7,7 +7,6 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(CMOCKA REQUIRED cmocka IMPORTED_TARGET)
 
-# Используем ваш существующий файл lab17_testing.c
 add_executable(test_list lab17_testing.c)
 
 target_link_libraries(test_list PkgConfig::CMOCKA)

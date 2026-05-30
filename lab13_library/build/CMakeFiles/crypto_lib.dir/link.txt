@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcrypto_lib.a CMakeFiles/crypto_lib.dir/src/crypto.c.o
-/usr/bin/ranlib libcrypto_lib.a

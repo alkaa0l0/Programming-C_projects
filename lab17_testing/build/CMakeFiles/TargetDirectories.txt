@@ -1,4 +1,0 @@
-/home/git/lab17_testing/build/CMakeFiles/test_list.dir
-/home/git/lab17_testing/build/CMakeFiles/run_tests.dir
-/home/git/lab17_testing/build/CMakeFiles/edit_cache.dir
-/home/git/lab17_testing/build/CMakeFiles/rebuild_cache.dir
